@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../core/theme/app_theme.dart';
 import '../features/dashboard/pages/dashboard_page.dart';
@@ -39,7 +40,7 @@ class _HomeShellState extends State<HomeShell> {
         final now = DateTime.now();
         if (_lastBackPressed != null &&
             now.difference(_lastBackPressed!) < const Duration(seconds: 2)) {
-          Navigator.of(context).pop();
+          SystemNavigator.pop();
         } else {
           _lastBackPressed = now;
           ScaffoldMessenger.of(context).showSnackBar(
