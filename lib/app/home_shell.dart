@@ -7,6 +7,7 @@ import '../features/dashboard/viewmodels/finance_viewmodel.dart';
 import '../features/dashboard/widgets/floating_bottom_menu.dart';
 import '../features/expenses/widgets/add_expense_sheet.dart';
 import '../features/insights/pages/insights_page.dart';
+import '../features/planning/pages/planning_page.dart';
 import '../features/settings/pages/settings_page.dart';
 
 class HomeShell extends StatefulWidget {
@@ -58,6 +59,7 @@ class _HomeShellState extends State<HomeShell> {
             onAddExpense: _showAddExpense,
           ),
           1 => InsightsPage(finance: widget.finance),
+          2 => PlanningPage(finance: widget.finance),
           _ => SettingsPage(finance: widget.finance),
         },
         floatingActionButton: _index == 0

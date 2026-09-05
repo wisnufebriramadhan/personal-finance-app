@@ -128,7 +128,7 @@ class SettingsPage extends StatelessWidget {
           ),
           FilledButton(
             onPressed: () async {
-              await finance.updateBalances(
+              await finance.reconcileBalances(
                 cashValue: parseRupiah(cash.text),
                 ewalletValue: parseRupiah(wallet.text),
                 bankValue: parseRupiah(bank.text),
@@ -243,7 +243,8 @@ class SettingsPage extends StatelessWidget {
             SettingsActionTile(
               icon: Icons.sync_alt_rounded,
               title: 'Cash, E-Wallet & Bank',
-              subtitle: 'Total ${rupiah.format(finance.totalBalance)}',
+              subtitle:
+                  'Total ${rupiah.format(finance.totalBalance)} • perubahan dicatat',
               onTap: () => _editBalances(context),
             ),
           ],

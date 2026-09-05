@@ -7,9 +7,10 @@ class Expense {
     required this.source,
     required this.amount,
     required this.date,
+    this.type = 'expense',
   });
 
-  final String id, name, category, kind, source;
+  final String id, name, category, kind, source, type;
   final double amount;
   final DateTime date;
 
@@ -21,6 +22,7 @@ class Expense {
     'source': source,
     'amount': amount,
     'date': date.toIso8601String(),
+    'type': type,
   };
 
   factory Expense.fromJson(Map<String, dynamic> json) => Expense(
@@ -31,5 +33,8 @@ class Expense {
     source: json['source'] as String,
     amount: (json['amount'] as num).toDouble(),
     date: DateTime.parse(json['date'] as String),
+    type: json['type'] as String? ?? 'expense',
   );
+
+  bool get isAdjustment => type == 'adjustment';
 }

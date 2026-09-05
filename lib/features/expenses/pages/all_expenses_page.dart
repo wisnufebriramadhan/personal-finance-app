@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../dashboard/viewmodels/finance_viewmodel.dart';
 import '../widgets/expense_tile.dart';
 
@@ -10,14 +11,14 @@ class AllExpensesPage extends StatelessWidget {
     animation: finance,
     builder: (context, child) => Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Semua pengeluaran',
+        title: Text(
+          'Pengeluaran ${DateFormat('MMM yyyy', 'id_ID').format(finance.selectedMonth)}',
           style: TextStyle(fontWeight: FontWeight.w800),
         ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
-        children: finance.items
+        children: finance.periodItems
             .map(
               (expense) => ExpenseTile(
                 expense: expense,

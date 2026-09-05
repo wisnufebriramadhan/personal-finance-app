@@ -45,6 +45,12 @@ class FloatingBottomMenu extends StatelessWidget {
             _MenuItem(
               icon: Icons.tune_rounded,
               label: 'Atur',
+              selected: selectedIndex == 3,
+              onTap: () => onItemTapped(3),
+            ),
+            _MenuItem(
+              icon: Icons.event_note_rounded,
+              label: 'Rencana',
               selected: selectedIndex == 2,
               onTap: () => onItemTapped(2),
             ),

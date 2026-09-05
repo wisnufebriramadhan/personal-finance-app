@@ -32,7 +32,9 @@ class ExpenseTile extends StatelessWidget {
           builder: (dialogContext) => AlertDialog(
             title: const Text('Hapus transaksi?'),
             content: Text(
-              '"${expense.name}" akan dihapus dan saldo ${accountName(expense.source)} akan dikembalikan sebesar ${rupiah.format(expense.amount)}.',
+              expense.isAdjustment
+                  ? '"${expense.name}" akan dihapus. Saldo akun akan dikembalikan ke nilai sebelum penyesuaian.'
+                  : '"${expense.name}" akan dihapus dan saldo ${accountName(expense.source)} akan dikembalikan sebesar ${rupiah.format(expense.amount)}. Jika ini pembayaran cicilan, status pembayarannya juga akan dibatalkan.',
             ),
             actions: [
               TextButton(
@@ -102,7 +104,9 @@ class ExpenseTile extends StatelessWidget {
             ),
           ),
           Text(
-            '-${rupiah.format(expense.amount)}',
+            expense.isAdjustment
+                ? '${expense.amount < 0 ? '+' : '-'}${rupiah.format(expense.amount.abs())}'
+                : '-${rupiah.format(expense.amount)}',
             style: const TextStyle(
               color: ink,
               fontWeight: FontWeight.w800,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/formatters/currency_formatter.dart';
 import '../../../core/theme/app_theme.dart';
@@ -12,7 +13,9 @@ class InsightsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final totals = <String, double>{};
-    for (final expense in finance.items) {
+    for (final expense in finance.periodItems.where(
+      (item) => !item.isAdjustment,
+    )) {
       totals[expense.category] =
           (totals[expense.category] ?? 0) + expense.amount;
     }
@@ -23,8 +26,8 @@ class InsightsPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           const SizedBox(height: 8),
-          const Text(
-            'Analisis bulan ini',
+          Text(
+            'Analisis ${DateFormat('MMMM yyyy', 'id_ID').format(finance.selectedMonth)}',
             style: TextStyle(
               fontSize: 25,
               color: ink,
@@ -53,7 +56,8 @@ class InsightsPage extends StatelessWidget {
                 const SizedBox(width: 12),
                 MetricCard(
                   label: 'Transaksi',
-                  value: '${finance.items.length}',
+                  value:
+                      '${finance.periodItems.where((item) => !item.isAdjustment).length}',
                   color: const Color(0xFFE8F8F1),
                 ),
               ],

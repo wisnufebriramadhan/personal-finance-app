@@ -18,7 +18,10 @@ class DashboardPage extends StatelessWidget {
   final VoidCallback onAddExpense;
   @override
   Widget build(BuildContext context) {
-    final rawMonth = DateFormat('MMMM yyyy', 'id_ID').format(DateTime.now());
+    final rawMonth = DateFormat(
+      'MMMM yyyy',
+      'id_ID',
+    ).format(finance.selectedMonth);
     final month = rawMonth[0].toUpperCase() + rawMonth.substring(1);
     return SafeArea(
       child: ListView(
@@ -58,13 +61,40 @@ class DashboardPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 27),
-          Text(
-            month,
-            style: const TextStyle(
-              color: Color(0xFF73778B),
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
+          Row(
+            children: [
+              IconButton(
+                tooltip: 'Bulan sebelumnya',
+                onPressed: () => finance.selectMonth(
+                  DateTime(
+                    finance.selectedMonth.year,
+                    finance.selectedMonth.month - 1,
+                  ),
+                ),
+                icon: const Icon(Icons.chevron_left_rounded),
+              ),
+              Expanded(
+                child: Text(
+                  month,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Color(0xFF73778B),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              IconButton(
+                tooltip: 'Bulan berikutnya',
+                onPressed: () => finance.selectMonth(
+                  DateTime(
+                    finance.selectedMonth.year,
+                    finance.selectedMonth.month + 1,
+                  ),
+                ),
+                icon: const Icon(Icons.chevron_right_rounded),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           BudgetCard(finance: finance),
@@ -94,10 +124,10 @@ class DashboardPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 4),
-          if (finance.items.isEmpty)
+          if (finance.periodItems.isEmpty)
             EmptyExpenseState(onAddExpense: onAddExpense)
           else
-            ...finance.items
+            ...finance.periodItems
                 .take(4)
                 .map(
                   (expense) => ExpenseTile(

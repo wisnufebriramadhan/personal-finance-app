@@ -36,17 +36,31 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
       showMessage(context, 'Lengkapi nama dan nominal pengeluaran.');
       return;
     }
-    await widget.finance.addExpense(
-      Expense(
-        id: DateTime.now().microsecondsSinceEpoch.toString(),
-        name: _name.text.trim(),
-        category: _category,
-        kind: _kind,
-        source: _source,
-        amount: amount,
-        date: DateTime.now(),
-      ),
-    );
+    try {
+      await widget.finance.addExpense(
+        Expense(
+          id: DateTime.now().microsecondsSinceEpoch.toString(),
+          name: _name.text.trim(),
+          category: _category,
+          kind: _kind,
+          source: _source,
+          amount: amount,
+          date: DateTime.now(),
+        ),
+      );
+    } on InsufficientBalanceException catch (error) {
+      if (mounted) {
+        showMessage(
+          context,
+          'Saldo ${error.source == 'cash'
+              ? 'Cash'
+              : error.source == 'ewallet'
+              ? 'E-Wallet'
+              : 'Bank'} tidak mencukupi.',
+        );
+      }
+      return;
+    }
     if (mounted) Navigator.pop(context);
   }
 
